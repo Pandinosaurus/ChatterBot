@@ -2,6 +2,7 @@ import os
 import sys
 import csv
 import time
+import glob
 from dateutil import parser as date_parser
 from chatterbot.conversation import Statement
 from chatterbot.tagging import PosLemmaTagger
@@ -21,7 +22,8 @@ class Trainer(object):
     def __init__(self, chatbot, **kwargs):
         self.chatbot = chatbot
 
-        environment_default = os.getenv('CHATTERBOT_SHOW_TRAINING_PROGRESS', True)
+        environment_default = bool(int(os.environ.get('CHATTERBOT_SHOW_TRAINING_PROGRESS', True)))
+
         self.show_training_progress = kwargs.get(
             'show_training_progress',
             environment_default
@@ -51,7 +53,7 @@ class Trainer(object):
         def __init__(self, message=None):
             default = (
                 'A training class must be specified before calling train(). '
-                'See http://chatterbot.readthedocs.io/en/stable/training.html'
+                'See https://docs.chatterbot.us/training.html'
             )
             super().__init__(message or default)
 
@@ -177,6 +179,9 @@ class ChatterBotCorpusTrainer(Trainer):
 class UbuntuCorpusTrainer(Trainer):
     """
     Allow chatbots to be trained with the data from the Ubuntu Dialog Corpus.
+
+    For more information about the Ubuntu Dialog Corpus visit:
+    https://dataset.cs.mcgill.ca/ubuntu-corpus-1.0/
     """
 
     def __init__(self, chatbot, **kwargs):
@@ -196,10 +201,6 @@ class UbuntuCorpusTrainer(Trainer):
         self.extracted_data_directory = os.path.join(
             self.data_directory, 'ubuntu_dialogs'
         )
-
-        # Create the data directory if it does not already exist
-        if not os.path.exists(self.data_directory):
-            os.makedirs(self.data_directory)
 
     def is_downloaded(self, file_path):
         """
@@ -228,6 +229,10 @@ class UbuntuCorpusTrainer(Trainer):
         Based on: http://stackoverflow.com/a/15645088/1547223
         """
         import requests
+
+        # Create the data directory if it does not already exist
+        if not os.path.exists(self.data_directory):
+            os.makedirs(self.data_directory)
 
         file_name = url.split('/')[-1]
         file_path = os.path.join(self.data_directory, file_name)
@@ -280,32 +285,34 @@ class UbuntuCorpusTrainer(Trainer):
 
         with tarfile.open(file_path) as tar:
             def is_within_directory(directory, target):
-                
+
                 abs_directory = os.path.abspath(directory)
                 abs_target = os.path.abspath(target)
-            
+
                 prefix = os.path.commonprefix([abs_directory, abs_target])
-                
+
                 return prefix == abs_directory
-            
+
             def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
-            
+
                 for member in tar.getmembers():
                     member_path = os.path.join(path, member.name)
                     if not is_within_directory(path, member_path):
                         raise Exception("Attempted Path Traversal in Tar File")
-            
-                tar.extractall(path, members, numeric_owner=numeric_owner) 
-                
-            
+
+                tar.extractall(path, members, numeric_owner=numeric_owner)
+
             safe_extract(tar, path=self.extracted_data_directory, members=track_progress(tar))
 
         self.chatbot.logger.info('File extracted to {}'.format(self.extracted_data_directory))
 
         return True
 
-    def train(self):
-        import glob
+    def train(self, limit=None):
+        """
+        limit: int If defined, the number of files to read from the data set.
+        """
+        import tqdm
 
         tagger = PosLemmaTagger(language=self.chatbot.storage.tagger.language)
 
@@ -328,15 +335,19 @@ class UbuntuCorpusTrainer(Trainer):
 
         file_list = glob.glob(extracted_corpus_path)
 
-        file_groups = tuple(chunks(file_list, 10000))
+        # Limit the number of files used if a limit is defined
+        if limit is not None:
+            file_list = file_list[:limit]
+
+        file_groups = tuple(chunks(file_list, 5000))
 
         start_time = time.time()
 
-        for tsv_files in file_groups:
+        for batch_number, tsv_files in enumerate(file_groups):
 
             statements_from_file = []
 
-            for tsv_file in tsv_files:
+            for tsv_file in tqdm.tqdm(tsv_files, desc=f'Training with batch {batch_number} of {len(file_groups)}'):
                 with open(tsv_file, 'r', encoding='utf-8') as tsv:
                     reader = csv.reader(tsv, delimiter='\t')
 

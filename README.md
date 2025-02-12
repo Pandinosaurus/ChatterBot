@@ -8,10 +8,8 @@ known conversations. The language independent design of ChatterBot allows it
 to be trained to speak any language.
 
 [![Package Version](https://img.shields.io/pypi/v/chatterbot.svg)](https://pypi.python.org/pypi/chatterbot/)
-[![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
+[![Python 3.9](https://img.shields.io/badge/python-3.9-blue.svg)](https://www.python.org/downloads/release/python-360/)
 [![Django 2.0](https://img.shields.io/badge/Django-2.0-blue.svg)](https://docs.djangoproject.com/en/2.1/releases/2.0/)
-[![Build Status](https://travis-ci.org/gunthercox/ChatterBot.svg?branch=master)](https://travis-ci.org/gunthercox/ChatterBot)
-[![Documentation Status](https://readthedocs.org/projects/chatterbot/badge/?version=stable)](http://chatterbot.readthedocs.io/en/stable/?badge=stable)
 [![Coverage Status](https://img.shields.io/coveralls/gunthercox/ChatterBot.svg)](https://coveralls.io/r/gunthercox/ChatterBot)
 [![Code Climate](https://codeclimate.com/github/gunthercox/ChatterBot/badges/gpa.svg)](https://codeclimate.com/github/gunthercox/ChatterBot)
 [![Join the chat at https://gitter.im/chatterbot/Lobby](https://badges.gitter.im/chatterbot/Lobby.svg)](https://gitter.im/chatterbot/Lobby?utm_source=badge&utm_medium=badge&utm_content=badge)
@@ -31,13 +29,13 @@ An untrained instance of ChatterBot starts off with no knowledge of how to commu
 
 This package can be installed from [PyPi](https://pypi.python.org/pypi/ChatterBot) by running:
 
-```sh
+```bash
 pip install chatterbot
 ```
 
 ## Basic Usage
 
-```py
+```python
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
 
@@ -62,7 +60,7 @@ in other languages would be greatly appreciated. Take a look at the data files
 in the [chatterbot-corpus](https://github.com/gunthercox/chatterbot-corpus)
 package if you are interested in contributing.
 
-```py
+```python
 from chatterbot.trainers import ChatterBotCorpusTrainer
 
 # Create a new trainer for the chatbot
@@ -80,14 +78,14 @@ trainer.train("chatterbot.corpus.english.conversations")
 
 **Corpus contributions are welcome! Please make a pull request.**
 
-# [Documentation](https://chatterbot.readthedocs.io/)
+# [Documentation](https://docs.chatterbot.us)
 
-View the [documentation](https://chatterbot.readthedocs.io/)
+View the [documentation](https://docs.chatterbot.us)
 for ChatterBot on Read the Docs.
 
 To build the documentation yourself using [Sphinx](http://www.sphinx-doc.org/), run:
 
-```sh
+```bash
 sphinx-build -b html docs/ build/
 ```
 
@@ -110,7 +108,7 @@ See release notes for changes https://github.com/gunthercox/ChatterBot/releases
    a new branch `my-pull-request`.
 3. [Create a pull request](https://help.github.com/articles/creating-a-pull-request/).
 4. Please follow the [Python style guide for PEP-8](https://www.python.org/dev/peps/pep-0008/).
-5. Use the projects [built-in automated testing](https://chatterbot.readthedocs.io/en/latest/testing.html).
+5. Use the projects [built-in automated testing](https://docs.chatterbot.us/testing.html).
    to help make sure that your contribution is free from errors.
 
 # License

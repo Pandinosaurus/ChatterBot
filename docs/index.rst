@@ -1,4 +1,8 @@
-.. image:: ../graphics/banner.png
+.. container:: banner
+
+   .. image:: ../graphics/banner.png
+      :alt: ChatterBot Banner
+      :align: center
 
 About ChatterBot
 ================
@@ -18,6 +22,8 @@ An example of typical input would be something like this:
    bot:  I am doing very well, thank you for asking.
    user: You're welcome.
    bot:  Do you like hats?
+
+Originally, ChatterBot was created as a part of the codebase for the humanoid robot `Salvius`_. As the project grew, the :code:`chatterbot` library was released as a separate open-source project.
 
 Language Independence
 =====================
@@ -88,3 +94,4 @@ Indices and tables
 * :ref:`search`
 
 .. _GitHub: https://github.com/gunthercox/ChatterBot/issues/
+.. _Salvius: https://salvius.org

@@ -22,7 +22,7 @@ In this method, the unique identifiers for each chat session are being stored in
 session objects. This allows different users who interact with the bot through different
 web browsers to have separate conversations with the chat bot.
 
-.. literalinclude:: ../examples/django_app/example_app/views.py
+.. literalinclude:: ../examples/django_example/django_example/views.py
    :language: python
    :pyobject: ChatterBotApiView.post
    :dedent: 4
@@ -40,14 +40,14 @@ has returned based on some input.
 .. autoclass:: chatterbot.conversation.Statement
    :members:
 
-   .. autoinstanceattribute:: chatterbot.conversation.Statement.confidence
+   .. autoattribute:: chatterbot.conversation.Statement.confidence
 
       ChatterBot's logic adapters assign a confidence score to the statement
       before it is returned. The confidence score indicates the degree of
       certainty with which the chat bot believes this is the correct response
       to the given input.
 
-   .. autoinstanceattribute:: chatterbot.conversation.Statement.in_response_to
+   .. autoattribute:: chatterbot.conversation.Statement.in_response_to
 
       The response attribute represents the relationship between two statements.
       This value of this field indicates that one statement was issued in response

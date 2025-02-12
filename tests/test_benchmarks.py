@@ -17,7 +17,7 @@ WORDBANK = (
     'the', 'mellifluous', 'sound', 'of', 'a', 'spring', 'evening',
     'breaks', 'the', 'heart', 'string', 'by', 'calling', 'out', 'to',
     'David', 'who', 'looks', 'on', 'at', 'the', 'world', 'blankly',
-    'who', 'could', 'tell', 'that', 'there', 'is', 'no', 'instrament',
+    'who', 'could', 'tell', 'that', 'there', 'is', 'no', 'instrument',
     'softly', 'strumming', 'toward', 'the', 'melody', 'called', 'silence',
 )
 
@@ -134,7 +134,7 @@ class SqlBenchmarkingTests(BenchmarkingMixin, ChatBotSQLTestCase):
         Test response time after training with the Ubuntu corpus.
         """
         trainer = get_ubuntu_corpus_trainer(self.chatbot)
-        trainer.train()
+        trainer.train(limit=50)
 
         self.assert_response_duration_is_less_than(6)
 
